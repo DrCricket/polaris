@@ -1,0 +1,4 @@
+/* Hide table on load */
+div#table-div {
+    display: none;
+}

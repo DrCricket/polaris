@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Demand Supply App</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/css/index.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.3.0/animate.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		<script src="/static/js/index.js"></script>
+	</head>
+	<body>
+		<!-- Header / navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">Demand Supply App</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<p class="navbar-text navbar-right">Made by <a href="mailto:polaris@housing.com" class="navbar-link">polaris@housing.com</a></p>
+				</div>
+			</div>
+		</nav>
+		<!-- Selection form -->
+		<div id="selection-div" class="container">
+			<form id="selection-form">
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="select-service">Select a service</label>
+						<select id="select-service" name="select-service" class="form-control selectpicker" title="--" data-live-search="true" data-width="85%">
+							<option value="Buy">Buy</option>
+							<option value="Rent">Rent</option>
+						</select>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="select-city">Select a city</label>
+						<select id="select-city" name="select-city" class="form-control selectpicker" title="--" data-live-search="true" data-width="85%">
+							<option value="Mumbai">Mumbai</option>
+						<option value="Delhi">Delhi</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="select-locality">Add a locality</label><br>
+						<select id="select-locality" name="select-locality" class="form-control selectpicker" title="--" data-live-search="true" data-width="85%">
+						</select>
+						<a id="clear-locality" class="btn btn-default pull-right" href="#" role="button">Clear</a>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="select-sublocality">Add a sublocality</label><br>
+						<select id="select-sublocality" name="select-sublocality" class="form-control selectpicker" title="--" data-live-search="true" data-width="85%">
+						</select>
+						<a id="clear-sublocality" class="btn btn-default pull-right" href="#" role="button">Clear</a>
+					</div>
+				</div>
+				<br>
+				<button type="button" class="btn btn-primary center-block" id="submit">Submit</button>
+			</form>
+		</div>
+
+		<div id="content">
+			{% block content %}
+			{% endblock %}
+		</div>
+
+	</body>
+</html>

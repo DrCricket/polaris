@@ -1,6 +1,4 @@
-from django.db import models
 from mongoengine import *
-# Create your models here.
 
 class polygon_interrelations(Document):
 	polygon_uuid = StringField(required=True)
@@ -21,3 +19,6 @@ class polygon_demand_supply_data(Document):
 	rent_service_data = EmbeddedDocumentField(demand_supply_data)
 	buy_service_data = EmbeddedDocumentField(demand_supply_data)	
 	polygon_uuid = StringField(required=True)
+
+
+

@@ -23,7 +23,7 @@ $(document).ready(function() {
         display: 'block',
         width: $(window).width() + 'px',
         height: $(window).height() + 'px',
-        background: 'url(images/loader.svg) no-repeat center'
+        background: 'url(/static/images/loader.svg) no-repeat center'
     }).hide().appendTo('body');
 
     function getCities() {
@@ -32,7 +32,7 @@ $(document).ready(function() {
         new_html = '<option value="0" data-content="<strong>All</strong>">All</option>';
         $.ajax({
             type: "GET",
-            url: "/",
+            url: "/polaris/",
             data: {
                 'name': 'getCities'
             },

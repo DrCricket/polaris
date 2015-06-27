@@ -1,0 +1,12 @@
+*.pyc
+._*.py
+._*.html
+._*
+.fuse*
+**/TrackEasy/static/images/
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

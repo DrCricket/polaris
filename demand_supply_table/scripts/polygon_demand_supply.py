@@ -203,7 +203,9 @@ try:
 except:
 	pass
 
+
 for poly in polygon_parent_map:
+	
 	try:
 		pi_doc = polygon_interrelations(polygon_uuid = poly,
 			polygon_feature_type = polygon_feature_type_map[poly],
@@ -222,7 +224,6 @@ for poly in polygon_parent_map:
 	pi_doc.save()
 
 
-for poly in polygon_parent_map:
 
 	rent_service_data = demand_supply_data(unique_uids = polygon_users['rent'][poly],
 		unique_uids_count = len(polygon_users['rent'][poly]),
@@ -234,7 +235,13 @@ for poly in polygon_parent_map:
 		unique_desktop_ocrf_count = len(polygon_leads['buy']['desktop'][poly]),
 		unique_mobileweb_call_fcrf_count = len(polygon_leads['buy']['mobile_web'][poly]),
 		polygon_current_live_listings_count = len(polygon_buy_flat_list[poly]))
+	
 	poly_ds_doc = polygon_demand_supply_data(rent_service_data = rent_service_data,
 		buy_service_data = buy_service_data,
-		polygon_uuid = poly)
+		polygon_uuid = poly,
+		polygon_feature_type = polygon_feature_type_map[poly],
+		polygon_name = polygon_name_map[poly],
+		parent_polygon_uuid = polygon_parent_map[poly][0],
+		parent_polygon_feature_type = polygon_feature_type_map[polygon_parent_map[poly][0]],
+		parent_polygon_name = polygon_name_map[polygon_parent_map[poly][0]])
 	poly_ds_doc.save()

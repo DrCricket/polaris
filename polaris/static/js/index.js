@@ -34,7 +34,8 @@ $(document).ready(function() {
             type: "GET",
             url: "/polaris/",
             data: {
-                'name': 'getCities'
+                'name': 'getCities',
+                'service': 'buy'
             },
             success: function (data) {
                 console.log('Ajax success: loaded cities');

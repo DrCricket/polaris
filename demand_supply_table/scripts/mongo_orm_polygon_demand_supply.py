@@ -19,6 +19,11 @@ class polygon_demand_supply_data(Document):
 	rent_service_data = EmbeddedDocumentField(demand_supply_data)
 	buy_service_data = EmbeddedDocumentField(demand_supply_data)	
 	polygon_uuid = StringField(required=True)
+	polygon_feature_type = IntField(required=True)
+	polygon_name = StringField(required=True)
+	parent_polygon_uuid = StringField(required=True)
+	parent_polygon_feature_type = IntField(required=True)
+	parent_polygon_name = StringField(required=True)
 
 
 

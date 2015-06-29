@@ -151,9 +151,7 @@ $(document).ready(function() {
             },
             success: function (data) {
                 console.log('Ajax success: got ds data granular to sublocalities');
-                $('#table').bootstrapTable({
-                    load: data
-                });
+                $('#table').bootstrapTable('load', data);
                 $('#table-div').show();
                 // $('#overlay').hide();
             },
@@ -178,11 +176,9 @@ $(document).ready(function() {
             },
             success: function (data) {
                 console.log('Ajax success: got ds data granular to localities');
-                $('#table').bootstrapTable({
-                    load: data
-                });
+                $('#table').bootstrapTable('load', data);
                 $('#table-div').show();
-                // $('#overlay').hide();
+                $('#overlay').hide();
             },
             error: function (err) {
                 console.log("Ajax: Get error for ds data granular to localities:", err);
@@ -204,9 +200,7 @@ $(document).ready(function() {
             },
             success: function (data) {
                 console.log('Ajax success: got ds data granular to sublocalities');
-                $('#table').bootstrapTable({
-                    load: data
-                });
+                $('#table').bootstrapTable('load', data);
                 $('#table-div').show();
                 // $('#overlay').hide();
             },

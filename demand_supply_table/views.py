@@ -26,13 +26,13 @@ def ds_table_app(request):
 			print 'this is GET request for getting cities data',request.GET
 			
 			if request.GET['service']=='rent':
-				polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+				polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:200]
 				if polys:
 					for p in polys[0:200]:
 						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
 			
 			elif request.GET['service']=='buy':
-				polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+				polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:200]
 				if polys:
 					for p in polys[0:200]:
 						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
@@ -40,7 +40,7 @@ def ds_table_app(request):
 			return HttpResponse(json.dumps(data), content_type="application/json")
 
 		
-		if request.GET['name']=='getLocalities':
+		elif request.GET['name']=='getLocalities':
 			data=[]
 			print 'this is GET request for getting localities data',request.GET
 			
@@ -59,7 +59,7 @@ def ds_table_app(request):
 			return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-		if request.GET['name']=='getSublocalities':
+		elif request.GET['name']=='getSublocalities':
 			data=[]
 			print 'this is GET request for getting sublocalities data',request.GET
 			
@@ -78,34 +78,34 @@ def ds_table_app(request):
 			return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-		if request.GET['name']=='ds_data_granular_to_sublocality':
+		elif request.GET['name']=='ds_data_granular_to_sublocality':
 			print 'this is GET request for getting ds data granular to sublocalities ',request.GET
 			
 			data=[]
 			if request.GET['service']=='rent':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
 					if cities:
 						c_ticker=0
 						for c in cities[0:10]:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
-							print c.to_json()
+							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 							if localities:
 								l_ticker=0
 								for l in localities[0:100]:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
-									print l.to_json()
+									# print l.to_json()
 									sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 									if sublocalities:
 										s_ticker=0
 										for s in sublocalities[0:100]:
 											s_ticker+=1
 											print 'sublocality ticker ', s_ticker
-											print s.to_json()
+											# print s.to_json()
 											ds_gap = s.rent_service_data.unique_uids_count - s.rent_service_data.polygon_current_live_listings_count
 											conversions = int(s.rent_service_data.unique_desktop_ocrf_count + 1.67*s.rent_service_data.unique_mobileweb_call_fcrf_count)
 											try:
@@ -167,28 +167,28 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
+				elif request.GET['city']!='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if localities:
 							l_ticker=0
 							for l in localities[0:100]:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
-								print l.to_json()
+								# print l.to_json()
 								sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 								if sublocalities:
 									s_ticker=0
 									for s in sublocalities[0:100]:
 										s_ticker+=1
 										print 'sublocality ticker ', s_ticker
-										print s.to_json()
+										# print s.to_json()
 										ds_gap = s.rent_service_data.unique_uids_count - s.rent_service_data.polygon_current_live_listings_count
 										conversions = int(s.rent_service_data.unique_desktop_ocrf_count + 1.67*s.rent_service_data.unique_mobileweb_call_fcrf_count)
 										try:
@@ -250,28 +250,28 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']=='0':
+				elif request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']=='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						locality = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid, polygon_uuid=request.GET['locality']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if locality:
 							l_ticker=0
 							l=locality[0]
 							l_ticker+=1
 							print 'locality ticker ', l_ticker
-							print l.to_json()
+							# print l.to_json()
 							sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 							if sublocalities:
 								s_ticker=0
 								for s in sublocalities[0:100]:
 									s_ticker+=1
 									print 'sublocality ticker ', s_ticker
-									print s.to_json()
+									# print s.to_json()
 									ds_gap = s.rent_service_data.unique_uids_count - s.rent_service_data.polygon_current_live_listings_count
 									conversions = int(s.rent_service_data.unique_desktop_ocrf_count + 1.67*s.rent_service_data.unique_mobileweb_call_fcrf_count)
 									try:
@@ -333,28 +333,28 @@ def ds_table_app(request):
 						pass
 			
 				
-				if request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']!='0':
+				elif request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']!='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						locality = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid, polygon_uuid=request.GET['locality']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if locality:
 							l_ticker=0
 							l=locality[0]
 							l_ticker+=1
 							print 'locality ticker ', l_ticker
-							print l.to_json()
+							# print l.to_json()
 							sublocality = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid, polygon_uuid=request.GET['sublocality']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 							if sublocality:
 								s_ticker=0
 								s=sublocality[0]
 								s_ticker+=1
 								print 'sublocality ticker ', s_ticker
-								print s.to_json()
+								# print s.to_json()
 								ds_gap = s.rent_service_data.unique_uids_count - s.rent_service_data.polygon_current_live_listings_count
 								conversions = int(s.rent_service_data.unique_desktop_ocrf_count + 1.67*s.rent_service_data.unique_mobileweb_call_fcrf_count)
 								try:
@@ -418,27 +418,27 @@ def ds_table_app(request):
 			elif request.GET['service']=='buy':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
 					if cities:
 						c_ticker=0
 						for c in cities[0:10]:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
-							print c.to_json()
+							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 							if localities:
 								l_ticker=0
 								for l in localities[0:100]:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
-									print l.to_json()
+									# print l.to_json()
 									sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 									if sublocalities:
 										s_ticker=0
 										for s in sublocalities[0:100]:
 											s_ticker+=1
 											print 'sublocality ticker ', s_ticker
-											print s.to_json()
+											# print s.to_json()
 											ds_gap = s.buy_service_data.unique_uids_count - s.buy_service_data.polygon_current_live_listings_count
 											conversions = int(s.buy_service_data.unique_desktop_ocrf_count + 1.67*s.buy_service_data.unique_mobileweb_call_fcrf_count)
 											try:
@@ -500,28 +500,28 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
+				elif request.GET['city']!='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if localities:
 							l_ticker=0
 							for l in localities[0:100]:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
-								print l.to_json()
+								# print l.to_json()
 								sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 								if sublocalities:
 									s_ticker=0
 									for s in sublocalities[0:100]:
 										s_ticker+=1
 										print 'sublocality ticker ', s_ticker
-										print s.to_json()
+										# print s.to_json()
 										ds_gap = s.buy_service_data.unique_uids_count - s.buy_service_data.polygon_current_live_listings_count
 										conversions = int(s.buy_service_data.unique_desktop_ocrf_count + 1.67*s.buy_service_data.unique_mobileweb_call_fcrf_count)
 										try:
@@ -583,28 +583,28 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']=='0':
+				elif request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']=='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						locality = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid, polygon_uuid=request.GET['locality']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if locality:
 							l_ticker=0
 							l=locality[0]
 							l_ticker+=1
 							print 'locality ticker ', l_ticker
-							print l.to_json()
+							# print l.to_json()
 							sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 							if sublocalities:
 								s_ticker=0
 								for s in sublocalities[0:100]:
 									s_ticker+=1
 									print 'sublocality ticker ', s_ticker
-									print s.to_json()
+									# print s.to_json()
 									ds_gap = s.buy_service_data.unique_uids_count - s.buy_service_data.polygon_current_live_listings_count
 									conversions = int(s.buy_service_data.unique_desktop_ocrf_count + 1.67*s.buy_service_data.unique_mobileweb_call_fcrf_count)
 									try:
@@ -666,28 +666,28 @@ def ds_table_app(request):
 						pass
 			
 				
-				if request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']!='0':
+				elif request.GET['city']!='0' and request.GET['locality']!='0' and request.GET['sublocality']!='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						locality = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid, polygon_uuid=request.GET['locality']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if locality:
 							l_ticker=0
 							l=locality[0]
 							l_ticker+=1
 							print 'locality ticker ', l_ticker
-							print l.to_json()
+							# print l.to_json()
 							sublocality = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid, polygon_uuid=request.GET['sublocality']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 							if sublocality:
 								s_ticker=0
 								s=sublocality[0]
 								s_ticker+=1
 								print 'sublocality ticker ', s_ticker
-								print s.to_json()
+								# print s.to_json()
 								ds_gap = s.buy_service_data.unique_uids_count - s.buy_service_data.polygon_current_live_listings_count
 								conversions = int(s.buy_service_data.unique_desktop_ocrf_count + 1.67*s.buy_service_data.unique_mobileweb_call_fcrf_count)
 								try:
@@ -751,27 +751,27 @@ def ds_table_app(request):
 			return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-		if request.GET['name']=='ds_data_granular_to_locality':
+		elif request.GET['name']=='ds_data_granular_to_locality':
 			print 'this is GET request for getting ds data granular to localities ',request.GET
 			
 			data=[]
 			if request.GET['service']=='rent':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' :
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
 					if cities:
 						c_ticker=0
 						for c in cities[0:10]:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
-							print c.to_json()
+							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 							if localities:
 								l_ticker=0
 								for l in localities[0:100]:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
-									print l.to_json()
+									# print l.to_json()
 									ds_gap = l.rent_service_data.unique_uids_count - l.rent_service_data.polygon_current_live_listings_count
 									conversions = int(l.rent_service_data.unique_desktop_ocrf_count + 1.67*l.rent_service_data.unique_mobileweb_call_fcrf_count)
 									try:
@@ -811,21 +811,21 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']=='0' :
+				elif request.GET['city']!='0' and request.GET['locality']=='0' :
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 						if localities:
 							l_ticker=0
 							for l in localities[0:100]:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
-								print l.to_json()
+								# print l.to_json()
 								ds_gap = l.rent_service_data.unique_uids_count - l.rent_service_data.polygon_current_live_listings_count
 								conversions = int(l.rent_service_data.unique_desktop_ocrf_count + 1.67*l.rent_service_data.unique_mobileweb_call_fcrf_count)
 								try:
@@ -865,21 +865,21 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']!='0':
+				elif request.GET['city']!='0' and request.GET['locality']!='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						locality = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid,polygon_uuid=request.GET['locality']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 						if locality:
 							l_ticker=0
 							l=locality[0]
 							l_ticker+=1
 							print 'locality ticker ', l_ticker
-							print l.to_json()
+							# print l.to_json()
 							ds_gap = l.rent_service_data.unique_uids_count - l.rent_service_data.polygon_current_live_listings_count
 							conversions = int(l.rent_service_data.unique_desktop_ocrf_count + 1.67*l.rent_service_data.unique_mobileweb_call_fcrf_count)
 							try:
@@ -918,25 +918,23 @@ def ds_table_app(request):
 					else:
 						pass
 			
-				
-							
-			if request.GET['service']=='buy':
+			elif request.GET['service']=='buy':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' :
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
 					if cities:
 						c_ticker=0
 						for c in cities[0:10]:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
-							print c.to_json()
+							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 							if localities:
 								l_ticker=0
 								for l in localities[0:100]:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
-									print l.to_json()
+									# print l.to_json()
 									ds_gap = l.buy_service_data.unique_uids_count - l.buy_service_data.polygon_current_live_listings_count
 									conversions = int(l.buy_service_data.unique_desktop_ocrf_count + 1.67*l.buy_service_data.unique_mobileweb_call_fcrf_count)
 									try:
@@ -976,21 +974,21 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']=='0' :
+				elif request.GET['city']!='0' and request.GET['locality']=='0' :
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 						if localities:
 							l_ticker=0
 							for l in localities[0:100]:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
-								print l.to_json()
+								# print l.to_json()
 								ds_gap = l.buy_service_data.unique_uids_count - l.buy_service_data.polygon_current_live_listings_count
 								conversions = int(l.buy_service_data.unique_desktop_ocrf_count + 1.67*l.buy_service_data.unique_mobileweb_call_fcrf_count)
 								try:
@@ -1030,21 +1028,21 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0' and request.GET['locality']!='0':
+				elif request.GET['city']!='0' and request.GET['locality']!='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						locality = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid,polygon_uuid=request.GET['locality']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 						if locality:
 							l_ticker=0
 							l=locality[0]
 							l_ticker+=1
 							print 'locality ticker ', l_ticker
-							print l.to_json()
+							# print l.to_json()
 							ds_gap = l.buy_service_data.unique_uids_count - l.buy_service_data.polygon_current_live_listings_count
 							conversions = int(l.buy_service_data.unique_desktop_ocrf_count + 1.67*l.buy_service_data.unique_mobileweb_call_fcrf_count)
 							try:
@@ -1086,20 +1084,20 @@ def ds_table_app(request):
 			return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-		if request.GET['name']=='ds_data_granular_to_city':
-			print 'this is GET request for getting ds data granular to localities ',request.GET
+		elif request.GET['name']=='ds_data_granular_to_city':
+			print 'this is GET request for getting ds data granular to cities ',request.GET
 			
 			data=[]
 			if request.GET['service']=='rent':
 
 				if request.GET['city']=='0':
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "rent_service_data")
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "rent_service_data")[:10]
 					if cities:
 						c_ticker=0
 						for c in cities[0:100]:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
-							print c.to_json()
+							# print c.to_json()
 							ds_gap = c.rent_service_data.unique_uids_count - c.rent_service_data.polygon_current_live_listings_count
 							conversions = int(c.rent_service_data.unique_desktop_ocrf_count + 1.67*c.rent_service_data.unique_mobileweb_call_fcrf_count)
 							try:
@@ -1119,14 +1117,14 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0':
+				elif request.GET['city']!='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "rent_service_data")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						ds_gap = c.rent_service_data.unique_uids_count - c.rent_service_data.polygon_current_live_listings_count
 						conversions = int(c.rent_service_data.unique_desktop_ocrf_count + 1.67*c.rent_service_data.unique_mobileweb_call_fcrf_count)
 						try:
@@ -1145,17 +1143,16 @@ def ds_table_app(request):
 					else:
 						pass
 
-							
-			if request.GET['service']=='buy':
+			elif request.GET['service']=='buy':
 
 				if request.GET['city']=='0':
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "buy_service_data")
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "buy_service_data")[:10]
 					if cities:
 						c_ticker=0
 						for c in cities[0:100]:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
-							print c.to_json()
+							# print c.to_json()
 							ds_gap = c.buy_service_data.unique_uids_count - c.buy_service_data.polygon_current_live_listings_count
 							conversions = int(c.buy_service_data.unique_desktop_ocrf_count + 1.67*c.buy_service_data.unique_mobileweb_call_fcrf_count)
 							try:
@@ -1175,14 +1172,14 @@ def ds_table_app(request):
 						pass
 
 
-				if request.GET['city']!='0':
+				elif request.GET['city']!='0':
 					city = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "buy_service_data")
 					if city:
 						c_ticker=0
 						c=city[0]
 						c_ticker+=1
 						print 'city ticker ', c_ticker
-						print c.to_json()
+						# print c.to_json()
 						ds_gap = c.buy_service_data.unique_uids_count - c.buy_service_data.polygon_current_live_listings_count
 						conversions = int(c.buy_service_data.unique_desktop_ocrf_count + 1.67*c.buy_service_data.unique_mobileweb_call_fcrf_count)
 						try:

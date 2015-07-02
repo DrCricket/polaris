@@ -83,6 +83,7 @@ $(document).ready(function() {
         if (city_id == 0) {
             $('#select-locality').html(new_html);
             $('#select-locality').selectpicker('refresh');
+            $('#overlay').hide();
         } else {
             $.ajax({
                 type: "GET",
@@ -119,6 +120,7 @@ $(document).ready(function() {
         if (locality_id == 0) {
             $('#select-sublocality').html(new_html);
             $('#select-sublocality').selectpicker('refresh');
+            $('#overlay').hide();
         } else if (locality_id != '') {
             $.ajax({
                 type: "GET",

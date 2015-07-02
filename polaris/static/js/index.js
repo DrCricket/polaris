@@ -16,6 +16,16 @@ $(document).ready(function() {
 
     $('.selectpicker').selectpicker();
 
+    // $('<div id="overlay"/>').css({
+    //     position: 'fixed',
+    //     top: 0,
+    //     left: 0,
+    //     display: 'block',
+    //     width: $(window).width() + 'px',
+    //     height: $(window).height() + 'px',
+    //     background: 'url(/static/images/loader.svg) no-repeat center'
+    // }).hide().appendTo('body');
+
     $('<div id="overlay"/>').css({
         position: 'fixed',
         top: 0,
@@ -23,11 +33,11 @@ $(document).ready(function() {
         display: 'block',
         width: $(window).width() + 'px',
         height: $(window).height() + 'px',
-        background: 'url(/static/images/loader.svg) no-repeat center'
+        background: 'url(/static/gif/ajax-loader-circle.gif) no-repeat center'
     }).hide().appendTo('body');
 
     function getCities(service) {
-        // $('#overlay').show();
+        $('#overlay').show();
         console.log('Getting cities... for service '+service.toLowerCase());
         $('#select-city').selectpicker('deselectAll');
         $('#select-city').empty();
@@ -52,17 +62,17 @@ $(document).ready(function() {
                 });
                 $('#select-city').html(new_html);
                 $('#select-city').selectpicker('refresh');
-                // $('#overlay').hide();
+                $('#overlay').hide();
             },
             error: function (err) {
                 console.log("Ajax: Get error for cities:", err);
-                // $('#overlay').hide();
+                $('#overlay').hide();
             }
         });
     }
 
     function getLocalities(service,city_id) {
-        // $('#overlay').show();
+        $('#overlay').show();
         console.log('Getting localities...for service and city '+service.toLowerCase()+'  '+city_id);
         $('#select-locality').selectpicker('deselectAll');
         $('#select-locality').empty();
@@ -90,18 +100,18 @@ $(document).ready(function() {
                     });
                     $('#select-locality').html(new_html);
                     $('#select-locality').selectpicker('refresh');
-                    // $('#overlay').hide();
+                    $('#overlay').hide();
                 },
                 error: function (err) {
                     console.log("Ajax: Get error for localities:", err);
-                    // $('#overlay').hide();
+                    $('#overlay').hide();
                 }
             });
         }
     }
 
     function getSublocalities(service, locality_id) {
-        // $('#overlay').show();
+        $('#overlay').show();
         console.log('Getting sublocalities...for service and locality '+service.toLowerCase()+'  '+locality_id);
         $('#select-sublocality').selectpicker('deselectAll');
         $('#select-sublocality').empty();
@@ -126,18 +136,18 @@ $(document).ready(function() {
                     });
                     $('#select-sublocality').html(new_html);
                     $('#select-sublocality').selectpicker('refresh');
-                    // $('#overlay').hide();
+                    $('#overlay').hide();
                 },
                 error: function (err) {
                     console.log("Ajax: Get error for sublocalities:", err);
-                    // $('#overlay').hide();
+                    $('#overlay').hide();
                 }
             });
         }
     }
 
     function fill_data_granular_to_sublocality(service, city, locality, sublocality){
-        // $('#overlay').show();
+        $('#overlay').show();
         console.log('filling data granular to sublocality...for service and city and locality and sublocality '+service.toLowerCase()+'  '+city+'  '+locality+'  '+sublocality);
         $.ajax({
             type: "GET",
@@ -153,17 +163,17 @@ $(document).ready(function() {
                 console.log('Ajax success: got ds data granular to sublocalities');
                 $('#table').bootstrapTable('load', data);
                 $('#table-div').show();
-                // $('#overlay').hide();
+                $('#overlay').hide();
             },
             error: function (err) {
                 console.log("Ajax: Get error for ds data granular to sublocalities:", err);
-                // $('#overlay').hide();
+                $('#overlay').hide();
             }
         });
     }
     
     function fill_data_granular_to_locality(service, city, locality){
-        // $('#overlay').show();
+        $('#overlay').show();
         console.log('filling data granular to locality...for service and city and locality '+service.toLowerCase()+'  '+city+'  '+locality);
         $.ajax({
             type: "GET",
@@ -182,13 +192,13 @@ $(document).ready(function() {
             },
             error: function (err) {
                 console.log("Ajax: Get error for ds data granular to localities:", err);
-                // $('#overlay').hide();
+                $('#overlay').hide();
             }
         });
     }
 
     function fill_data_granular_to_city(service, city){
-        // $('#overlay').show();
+        $('#overlay').show();
         console.log('filling data granular to city...for service and city and '+service.toLowerCase()+'  '+city);
         $.ajax({
             type: "GET",
@@ -202,11 +212,11 @@ $(document).ready(function() {
                 console.log('Ajax success: got ds data granular to sublocalities');
                 $('#table').bootstrapTable('load', data);
                 $('#table-div').show();
-                // $('#overlay').hide();
+                $('#overlay').hide();
             },
             error: function (err) {
                 console.log("Ajax: Get error for ds data granular to sublocalities:", err);
-                // $('#overlay').hide();
+                $('#overlay').hide();
             }
         });
     }

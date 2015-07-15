@@ -110,9 +110,9 @@ for obj in data_filters_rent:
 	if 'uid' in obj and 'action' in obj and 'polygon_id' in obj and 'timeStamp' in obj:
 		if obj['action'] in ['locality','locality_home_page','search_click']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-				polygon_users['rent'][obj['polygon_id']][obj['uid']]=obj['timeStamp']
-				polygon_users['rent'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-		
+				polygon_users['rent'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp']))
+				polygon_users['rent'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+del data_filters_rent		
 
 data_infowindows_rent = analytics_db['Infowindow_rent'].find({'_id':{'$gte':yutcoid,'$lte':tutcoid}},{'uid':1,'action':1,'polygon_id':1, 'timeStamp':1})
 ticker = 0
@@ -121,9 +121,9 @@ for obj in data_infowindows_rent:
 	if 'uid' in obj and 'action' in obj and 'polygon_id' in obj and 'timeStamp' in obj:
 		if obj['action'] in ['opened from map','opened from list']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-				polygon_users['rent'][obj['polygon_id']][obj['uid']]=obj['timeStamp'] 
-				polygon_users['rent'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-
+				polygon_users['rent'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp'])) 
+				polygon_users['rent'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+del data_infowindows_rent
 
 data_ocrf_rent = analytics_db['Form'].find({'_id':{'$gte':yutcoid,'$lte':tutcoid}, 'service':'rent'} ,{'uid':1,'action':1,'polygon_id':1, 'device':1, 'timeStamp':1})
 ticker = 0
@@ -132,17 +132,17 @@ for obj in data_ocrf_rent:
 	if 'uid' in obj and 'action' in obj and 'polygon_id' in obj and 'device' in obj and 'timeStamp' in obj:
 		if obj['action'] in ['open_crf','filled_crf', 'submitted_crf'] and 'desktop' in obj['device']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-					polygon_leads['rent']['desktop'][obj['polygon_id']][obj['uid']]=obj['timeStamp'] 
-					polygon_leads['rent']['desktop'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-					polygon_total_leads['rent']['desktop'][obj['polygon_id']][obj['timeStamp']]=1 
-					polygon_total_leads['rent']['desktop'][polygon_parent_map[obj['polygon_id']][0]][obj['timeStamp']]=1
+					polygon_leads['rent']['desktop'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp'])) 
+					polygon_leads['rent']['desktop'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+					polygon_total_leads['rent']['desktop'][obj['polygon_id']][str(int(obj['timeStamp']))]=1 
+					polygon_total_leads['rent']['desktop'][polygon_parent_map[obj['polygon_id']][0]][str(int(obj['timeStamp']))]=1
 		if obj['action'] in ['call','filled_crf'] and 'mobile' in obj['device']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-					polygon_leads['rent']['mobile_web'][obj['polygon_id']][obj['uid']]=obj['timeStamp'] 
-					polygon_leads['rent']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-					polygon_total_leads['rent']['mobile_web'][obj['polygon_id']][obj['timeStamp']]=1
-					polygon_total_leads['rent']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][obj['timeStamp']]=1
-
+					polygon_leads['rent']['mobile_web'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp'])) 
+					polygon_leads['rent']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+					polygon_total_leads['rent']['mobile_web'][obj['polygon_id']][str(int(obj['timeStamp']))]=1
+					polygon_total_leads['rent']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][str(int(obj['timeStamp']))]=1
+del data_ocrf_rent
 
 data_filters_buy = analytics_db['Filters_buy'].find({'_id':{'$gte':yutcoid,'$lte':tutcoid}},{'uid':1,'action':1,'polygon_id':1, 'timeStamp':1})
 ticker=0
@@ -151,9 +151,9 @@ for obj in data_filters_buy:
 	if 'uid' in obj and 'action' in obj and 'polygon_id' in obj and 'timeStamp' in obj:
 		if obj['action'] in ['locality','locality_home_page','search_click']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-				polygon_users['buy'][obj['polygon_id']][obj['uid']]=obj['timeStamp']
-				polygon_users['buy'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-		
+				polygon_users['buy'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp']))
+				polygon_users['buy'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+del data_filters_buy
 
 
 data_infowindows_buy = analytics_db['Infowindow_buy'].find({'_id':{'$gte':yutcoid,'$lte':tutcoid}},{'uid':1,'action':1,'polygon_id':1, 'timeStamp':1})
@@ -163,9 +163,9 @@ for obj in data_infowindows_buy:
 	if 'uid' in obj and 'action' in obj and 'polygon_id' in obj and 'timeStamp' in obj:
 		if obj['action'] in ['opened from map','opened from list']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-					polygon_users['buy'][obj['polygon_id']][obj['uid']]=obj['timeStamp'] 
-					polygon_users['buy'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-
+					polygon_users['buy'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp'])) 
+					polygon_users['buy'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+del data_infowindows_buy
 
 
 data_ocrf_buy = analytics_db['Form'].find({'_id':{'$gte':yutcoid,'$lte':tutcoid}, 'service':'buy'} ,{'uid':1,'action':1,'polygon_id':1, 'device':1, 'timeStamp':1})
@@ -175,16 +175,17 @@ for obj in data_ocrf_buy:
 	if 'uid' in obj and 'action' in obj and 'polygon_id' in obj and 'device' in obj and 'timeStamp' in obj:
 		if obj['action'] in ['open_crf','filled_crf', 'submitted_crf'] and 'desktop' in obj['device']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-					polygon_leads['buy']['desktop'][obj['polygon_id']][obj['uid']]=obj['timeStamp'] 
-					polygon_leads['buy']['desktop'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-					polygon_total_leads['buy']['desktop'][obj['polygon_id']][obj['timeStamp']]=1
-					polygon_total_leads['buy']['desktop'][polygon_parent_map[obj['polygon_id']][0]][obj['timeStamp']]=1
+					polygon_leads['buy']['desktop'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp'])) 
+					polygon_leads['buy']['desktop'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+					polygon_total_leads['buy']['desktop'][obj['polygon_id']][str(int(obj['timeStamp']))]=1
+					polygon_total_leads['buy']['desktop'][polygon_parent_map[obj['polygon_id']][0]][str(int(obj['timeStamp']))]=1
 		if obj['action'] in ['call','filled_crf'] and 'mobile' in obj['device']:
 			if obj['uid']!=None and type(obj['polygon_id']) is not dict and str(obj['polygon_id'])!='' and obj['polygon_id'] in polygon_parent_map and obj['timeStamp']:
-					polygon_leads['buy']['mobile_web'][obj['polygon_id']][obj['uid']]=obj['timeStamp'] 
-					polygon_leads['buy']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=obj['timeStamp']
-					polygon_total_leads['buy']['mobile_web'][obj['polygon_id']][obj['timeStamp']]=1
-					polygon_total_leads['buy']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][obj['timeStamp']]=1
+					polygon_leads['buy']['mobile_web'][obj['polygon_id']][obj['uid']]=str(int(obj['timeStamp'])) 
+					polygon_leads['buy']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][obj['uid']]=str(int(obj['timeStamp']))
+					polygon_total_leads['buy']['mobile_web'][obj['polygon_id']][str(int(obj['timeStamp']))]=1
+					polygon_total_leads['buy']['mobile_web'][polygon_parent_map[obj['polygon_id']][0]][str(int(obj['timeStamp']))]=1
+del data_ocrf_buy
 	
 
 # for key,value in polygons_map.iteritems():
@@ -250,24 +251,24 @@ for poly_ds_doc in polygon_demand_supply_data.objects():
 	
 	temp=None
 	temp = [ts for ts in poly_ds_doc.rent_service_data.total_desktop_ocrf_timestamps if datetime.datetime.fromtimestamp(int(ts)/1000).date()>datetime.datetime.now().date()-datetime.timedelta(days=31)]
-	temp.extend(polygon_total_leads['rent']['desktop'][poly_ds_doc.polygon_uuid])
+	temp.extend(polygon_total_leads['rent']['desktop'][poly_ds_doc.polygon_uuid].keys())
 	poly_ds_doc.rent_service_data.total_desktop_ocrf_timestamps = temp
 	poly_ds_doc.rent_service_data.total_desktop_ocrf_timestamps_count = len(temp)
 	temp=None
 	temp = [ts for ts in poly_ds_doc.buy_service_data.total_desktop_ocrf_timestamps if datetime.datetime.fromtimestamp(int(ts)/1000).date()>datetime.datetime.now().date()-datetime.timedelta(days=31)]
-	temp.extend(polygon_total_leads['buy']['desktop'][poly_ds_doc.polygon_uuid])
+	temp.extend(polygon_total_leads['buy']['desktop'][poly_ds_doc.polygon_uuid].keys())
 	poly_ds_doc.buy_service_data.total_desktop_ocrf_timestamps = temp
 	poly_ds_doc.buy_service_data.total_desktop_ocrf_timestamps_count = len(temp)
 	
 	
 	temp=None
 	temp = [ts for ts in poly_ds_doc.rent_service_data.total_mobileweb_call_fcrf_timestamps if datetime.datetime.fromtimestamp(int(ts)/1000).date()>datetime.datetime.now().date()-datetime.timedelta(days=31)]
-	temp.extend(polygon_total_leads['rent']['desktop'][poly_ds_doc.polygon_uuid])
+	temp.extend(polygon_total_leads['rent']['desktop'][poly_ds_doc.polygon_uuid].keys())
 	poly_ds_doc.rent_service_data.total_mobileweb_call_fcrf_timestamps = temp
 	poly_ds_doc.rent_service_data.total_mobileweb_call_fcrf_timestamps_count = len(temp)
 	temp=None
 	temp = [ts for ts in poly_ds_doc.buy_service_data.total_mobileweb_call_fcrf_timestamps if datetime.datetime.fromtimestamp(int(ts)/1000).date()>datetime.datetime.now().date()-datetime.timedelta(days=31)]
-	temp.extend(polygon_total_leads['buy']['desktop'][poly_ds_doc.polygon_uuid])
+	temp.extend(polygon_total_leads['buy']['desktop'][poly_ds_doc.polygon_uuid].keys())
 	poly_ds_doc.buy_service_data.total_mobileweb_call_fcrf_timestamps = temp
 	poly_ds_doc.buy_service_data.total_mobileweb_call_fcrf_timestamps_count = len(temp)
 

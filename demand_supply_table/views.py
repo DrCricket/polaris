@@ -85,24 +85,24 @@ def ds_table_app(request):
 			if request.GET['service']=='rent':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if cities:
 						c_ticker=0
-						for c in cities[0:10]:
+						for c in cities:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
 							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 							if localities:
 								l_ticker=0
-								for l in localities[0:100]:
+								for l in localities:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
 									# print l.to_json()
 									sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 									if sublocalities:
 										s_ticker=0
-										for s in sublocalities[0:100]:
+										for s in sublocalities:
 											s_ticker+=1
 											print 'sublocality ticker ', s_ticker
 											# print s.to_json()
@@ -178,14 +178,14 @@ def ds_table_app(request):
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if localities:
 							l_ticker=0
-							for l in localities[0:100]:
+							for l in localities:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
 								# print l.to_json()
 								sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 								if sublocalities:
 									s_ticker=0
-									for s in sublocalities[0:100]:
+									for s in sublocalities:
 										s_ticker+=1
 										print 'sublocality ticker ', s_ticker
 										# print s.to_json()
@@ -268,7 +268,7 @@ def ds_table_app(request):
 							sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 							if sublocalities:
 								s_ticker=0
-								for s in sublocalities[0:100]:
+								for s in sublocalities:
 									s_ticker+=1
 									print 'sublocality ticker ', s_ticker
 									# print s.to_json()
@@ -418,24 +418,24 @@ def ds_table_app(request):
 			elif request.GET['service']=='buy':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' and request.GET['sublocality']=='0':
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if cities:
 						c_ticker=0
-						for c in cities[0:10]:
+						for c in cities:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
 							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 							if localities:
 								l_ticker=0
-								for l in localities[0:100]:
+								for l in localities:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
 									# print l.to_json()
 									sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 									if sublocalities:
 										s_ticker=0
-										for s in sublocalities[0:100]:
+										for s in sublocalities:
 											s_ticker+=1
 											print 'sublocality ticker ', s_ticker
 											# print s.to_json()
@@ -511,14 +511,14 @@ def ds_table_app(request):
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 						if localities:
 							l_ticker=0
-							for l in localities[0:100]:
+							for l in localities:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
 								# print l.to_json()
 								sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 								if sublocalities:
 									s_ticker=0
-									for s in sublocalities[0:100]:
+									for s in sublocalities:
 										s_ticker+=1
 										print 'sublocality ticker ', s_ticker
 										# print s.to_json()
@@ -601,7 +601,7 @@ def ds_table_app(request):
 							sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 							if sublocalities:
 								s_ticker=0
-								for s in sublocalities[0:100]:
+								for s in sublocalities:
 									s_ticker+=1
 									print 'sublocality ticker ', s_ticker
 									# print s.to_json()
@@ -758,17 +758,17 @@ def ds_table_app(request):
 			if request.GET['service']=='rent':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' :
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if cities:
 						c_ticker=0
-						for c in cities[0:10]:
+						for c in cities:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
 							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 							if localities:
 								l_ticker=0
-								for l in localities[0:100]:
+								for l in localities:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
 									# print l.to_json()
@@ -822,7 +822,7 @@ def ds_table_app(request):
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
 						if localities:
 							l_ticker=0
-							for l in localities[0:100]:
+							for l in localities:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
 								# print l.to_json()
@@ -921,17 +921,17 @@ def ds_table_app(request):
 			elif request.GET['service']=='buy':
 
 				if request.GET['city']=='0' and request.GET['locality']=='0' :
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:10]
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 					if cities:
 						c_ticker=0
-						for c in cities[0:10]:
+						for c in cities:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
 							# print c.to_json()
 							localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 							if localities:
 								l_ticker=0
-								for l in localities[0:100]:
+								for l in localities:
 									l_ticker+=1
 									print 'locality ticker ', l_ticker
 									# print l.to_json()
@@ -985,7 +985,7 @@ def ds_table_app(request):
 						localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name","buy_service_data")
 						if localities:
 							l_ticker=0
-							for l in localities[0:100]:
+							for l in localities:
 								l_ticker+=1
 								print 'locality ticker ', l_ticker
 								# print l.to_json()
@@ -1091,10 +1091,10 @@ def ds_table_app(request):
 			if request.GET['service']=='rent':
 
 				if request.GET['city']=='0':
-					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "rent_service_data")[:10]
+					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "rent_service_data")
 					if cities:
 						c_ticker=0
-						for c in cities[0:100]:
+						for c in cities:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
 							# print c.to_json()
@@ -1149,7 +1149,7 @@ def ds_table_app(request):
 					cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", "buy_service_data")[:10]
 					if cities:
 						c_ticker=0
-						for c in cities[0:100]:
+						for c in cities:
 							c_ticker+=1
 							print 'city ticker ', c_ticker
 							# print c.to_json()

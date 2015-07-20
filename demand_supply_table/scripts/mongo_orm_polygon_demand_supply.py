@@ -12,8 +12,8 @@ class demand_supply_data(EmbeddedDocument):
 	unique_uids = DictField(required=False)
 	unique_desktop_ocrf_uids = DictField(required=False)
 	unique_mobileweb_call_fcrf_uids = DictField(required=False)
-	total_desktop_ocrf_timestamps = ListField(StringField(required=False))
-	total_mobileweb_call_fcrf_timestamps = ListField(StringField(required=False))
+	total_desktop_ocrf_timestamps = ListField(LongField(required=False))
+	total_mobileweb_call_fcrf_timestamps = ListField(LongField(required=False))
 	unique_uids_count = IntField(required=True, default=0)
 	unique_desktop_ocrf_uids_count = IntField(required=True, default=0)
 	unique_mobileweb_call_fcrf_uids_count = IntField(required=True, default=0)
@@ -21,7 +21,7 @@ class demand_supply_data(EmbeddedDocument):
 	total_mobileweb_call_fcrf_timestamps_count = IntField(required=True, default=0)
 	polygon_current_live_listings_count = IntField(required=True, default=0)
 
-class polygon_demand_supply_data(Document):
+class polygon_demand_supply_data_2(Document):
 	rent_service_data = EmbeddedDocumentField(demand_supply_data)
 	buy_service_data = EmbeddedDocumentField(demand_supply_data)	
 	polygon_uuid = StringField(required=True)

@@ -16,67 +16,40 @@ from forms import UploadForm
 import collections
 from collections import defaultdict
 
+def non_granular(request_type,service_type,id=id):
+	data=[]
+	n = 0
+	polys = []
+	if request_type == "getCities":
+		polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:200]	
+		n = 200
+	elif request_type == "getLocalities":
+		polys = polygon_demand_supply_data.objects(parent_polygon_uuid=id).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		n = 100
+	elif request_type == "getSublocalities":
+		polys = polygon_demand_supply_data.objects(parent_polygon_uuid=id).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		n = 100
+	if polys:
+		for p in polys[:n]:
+			data.append({'id':p.polygon_uuid,'name':p.polygon_name})
+			
+	return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+
 @csrf_exempt
 def ds_table_app(request):
 
 	if request.is_ajax() and request.GET:
 		
 		if request.GET['name']=='getCities':
-			data=[]
-			print 'this is GET request for getting cities data',request.GET
-			
-			if request.GET['service']=='rent':
-				polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:200]
-				if polys:
-					for p in polys[0:200]:
-						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
-			
-			elif request.GET['service']=='buy':
-				polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:200]
-				if polys:
-					for p in polys[0:200]:
-						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
-			
-			return HttpResponse(json.dumps(data), content_type="application/json")
-
+			return non_granular(request.GET['name'],request.GET['service'],id=None)
 		
 		elif request.GET['name']=='getLocalities':
-			data=[]
-			print 'this is GET request for getting localities data',request.GET
-			
-			if request.GET['service']=='rent':
-				polys = polygon_demand_supply_data.objects(parent_polygon_uuid=request.GET['city_id']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
-				if polys:
-					for p in polys[0:100]:
-						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
-			
-			elif request.GET['service']=='buy':
-				polys = polygon_demand_supply_data.objects(parent_polygon_uuid=request.GET['city_id']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
-				if polys:
-					for p in polys[0:100]:
-						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
-			
-			return HttpResponse(json.dumps(data), content_type="application/json")
-
+			return non_granular(request.GET['name'],request.GET['service'],id=request.GET['city_id'])
 
 		elif request.GET['name']=='getSublocalities':
-			data=[]
-			print 'this is GET request for getting sublocalities data',request.GET
-			
-			if request.GET['service']=='rent':
-				polys = polygon_demand_supply_data.objects(parent_polygon_uuid=request.GET['locality_id']).order_by("-rent_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
-				if polys:
-					for p in polys[0:100]:
-						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
-			
-			elif request.GET['service']=='buy':
-				polys = polygon_demand_supply_data.objects(parent_polygon_uuid=request.GET['locality_id']).order_by("-buy_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
-				if polys:
-					for p in polys[0:100]:
-						data.append({'id':p.polygon_uuid,'name':p.polygon_name})
-			
-			return HttpResponse(json.dumps(data), content_type="application/json")
-
+			return non_granular(request.GET['name'],request.GET['service'],id=request.GET['locality_id'])
 
 		elif request.GET['name']=='ds_data_granular_to_sublocality':
 			print 'this is GET request for getting ds data granular to sublocalities ',request.GET

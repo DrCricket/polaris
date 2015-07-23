@@ -106,7 +106,7 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-SESSION_ENGINE = 'mongoengine.django.sessions'
+##SESSION_ENGINE = 'mongoengine.django.sessions'
 
 from mongoengine import connect
-connect('vasu', username='', password='')
+connect('vasu', username='', password='', host='localhost', port=3339)

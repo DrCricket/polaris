@@ -37,6 +37,7 @@ def non_granular(request_type,service_type,id=id):
 	elif request_type == "getSublocalities":
 		polys = polygon_demand_supply_data.objects(parent_polygon_uuid=id).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 		n = 100
+
 	if polys:
 		for p in polys[:n]:
 			data.append({'id':p.polygon_uuid,'name':p.polygon_name})
@@ -61,7 +62,7 @@ def granular_to_city(request,export=False):
 	if cities:
 		c_ = 100 if var_city == "0" else 1
 		if export == True:
-			c_ = len(cities)
+			c_ = 2000
 		
 		for c in cities[:c_]:
 			
@@ -156,8 +157,7 @@ def granular_to_locality(request,export=False):
 						})
 			else:
 
-				temp_pds_obj = polygon_demand_supply_data.objects(polygon_uuid=c.polygon_uuid).only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")
-				temp_pds_obj = temp_pds_obj[0]
+				temp_pds_obj = polygon_demand_supply_data.objects(polygon_uuid=c.polygon_uuid).only("polygon_uuid","polygon_feature_type","polygon_name","rent_service_data")[0]
 				ds_gap = temp_pds_obj.rent_service_data.unique_uids_count - temp_pds_obj.rent_service_data.polygon_current_live_listings_count
 				conversions = int(temp_pds_obj.rent_service_data.unique_desktop_ocrf_count + 1.67*temp_pds_obj.rent_service_data.unique_mobileweb_call_fcrf_count)
 				leads_per_user = leads(conversions,temp_pds_obj.rent_service_data.unique_uids_count)
@@ -251,8 +251,7 @@ def granular_to_sublocality(request,export=False):
 								})
 					else:
 
-						temp_pds_obj = polygon_demand_supply_data.objects(polygon_uuid=l.polygon_uuid).only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
-						temp_pds_obj = temp_pds_obj[0]
+						temp_pds_obj = polygon_demand_supply_data.objects(polygon_uuid=l.polygon_uuid).only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")[0]
 
 						if service_type == "rent":
 
@@ -282,8 +281,7 @@ def granular_to_sublocality(request,export=False):
 							'leads_per_user' : leads_per_user
 							})
 			else:
-				temp_pds_obj = polygon_demand_supply_data.objects(polygon_uuid=l.polygon_uuid).only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
-				temp_pds_obj = temp_pds_obj[0]
+				temp_pds_obj = polygon_demand_supply_data.objects(polygon_uuid=l.polygon_uuid).only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")[0]
 
 				if service_type == "rent":
 					ds_gap = temp_pds_obj.rent_service_data.unique_uids_count - temp_pds_obj.rent_service_data.polygon_current_live_listings_count

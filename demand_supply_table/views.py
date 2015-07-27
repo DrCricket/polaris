@@ -29,13 +29,13 @@ def non_granular(request_type,service_type,id=id):
 	n = 0
 	polys = []
 	if request_type == "getCities":
-		polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:200]	
+		polys = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")[:200]	
 		n = 200
 	elif request_type == "getLocalities":
-		polys = polygon_demand_supply_data.objects(parent_polygon_uuid=id).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		polys = polygon_demand_supply_data.objects(parent_polygon_uuid=id).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 		n = 100
 	elif request_type == "getSublocalities":
-		polys = polygon_demand_supply_data.objects(parent_polygon_uuid=id).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		polys = polygon_demand_supply_data.objects(parent_polygon_uuid=id).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 		n = 100
 	if polys:
 		for p in polys[:n]:
@@ -54,9 +54,9 @@ def granular_to_city(request,export=False):
 	service_type = request.GET['service']
 
 	if var_city=='0':
-		cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", service_type+"_service_data")
+		cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name", service_type+"_service_data")
 	else:
-		cities = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=var_city).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name", service_type+"_service_data")
+		cities = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=var_city).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name", service_type+"_service_data")
 
 	if cities:
 		c_ = 100 if var_city == "0" else 1
@@ -106,9 +106,9 @@ def granular_to_locality(request,export=False):
 	var_locality = request.GET['locality']
 
 	if var_city == "0":
-		cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 	else:
-		cities = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=var_city).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		cities = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=var_city).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 
 		
 	if cities:
@@ -119,9 +119,9 @@ def granular_to_locality(request,export=False):
 
 		for c in cities[:c_]:
 			if var_locality == "0":
-				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
+				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
 			else:
-				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid,polygon_uuid=var_locality).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
+				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid,polygon_uuid=var_locality).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
 
 
 			if localities:
@@ -193,9 +193,9 @@ def granular_to_sublocality(request,export=False):
 
 
 	if var_city == "0":
-		cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		cities = polygon_demand_supply_data.objects(polygon_feature_type=37).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 	else:
-		cities = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+		cities = polygon_demand_supply_data.objects(polygon_feature_type=37, polygon_uuid=request.GET['city']).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 	
 	if cities:
 		c_= 100 if var_city == "0" else 1
@@ -203,9 +203,9 @@ def granular_to_sublocality(request,export=False):
 		for c in cities[:c_]:
 
 			if var_locality == "0":
-				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 			else:
-				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid, polygon_uuid=request.GET['locality']).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name")
+				localities = polygon_demand_supply_data.objects(parent_polygon_uuid=c.polygon_uuid, polygon_uuid=request.GET['locality']).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name")
 			
 			if localities:
 				l_ = 100 if var_locality == "0" else 1
@@ -214,9 +214,9 @@ def granular_to_sublocality(request,export=False):
 					
 
 					if var_sublocality == "0":
-						sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
+						sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
 					else:
-						sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid, polygon_uuid=request.GET['sublocality']).order_by("-"+service_type+"_service_data.polygon_current_live_listings_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
+						sublocalities = polygon_demand_supply_data.objects(parent_polygon_uuid=l.polygon_uuid, polygon_uuid=request.GET['sublocality']).order_by("-"+service_type+"_service_data.unique_uids_count").only("polygon_uuid","polygon_feature_type","polygon_name",service_type+"_service_data")
 					
 					if sublocalities:
 						sb_ = 100 if var_sublocality == "0" else 1
@@ -373,3 +373,4 @@ def ds_table_app(request):
 	
 
 	return render_to_response('demand_supply_table/index.html', context_instance=RequestContext(request))
+

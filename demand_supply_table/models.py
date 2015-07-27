@@ -12,10 +12,10 @@ class polygon_interrelations(Document):
 
 class demand_supply_data(EmbeddedDocument):
 	unique_uids = DictField(required=False)
-	unique_uids_count = IntField(required=True, default=0)
+	unique_uids_count = IntField(required=True, default=0) 					## Unique users ~ Demand
 	unique_desktop_ocrf_count = IntField(required=True, default=0)
 	unique_mobileweb_call_fcrf_count = IntField(required=True, default=0)
-	polygon_current_live_listings_count = IntField(required=True, default=0)
+	polygon_current_live_listings_count = IntField(required=True, default=0) ## Listings which are live ~ Supply
 
 class polygon_demand_supply_data(Document):
 	rent_service_data = EmbeddedDocumentField(demand_supply_data)
